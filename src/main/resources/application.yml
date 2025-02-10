@@ -1,0 +1,33 @@
+
+###### Server port ########
+server:
+  port: 8080  # ${SERVICE_PORT}
+
+###### Spring configs ########
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/AuthServiceDB # ${DB_URL}
+    username: postgres # ${DB_USERNAME}
+    password: 123456789 # ${DB_PASSWORD}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        hbm2ddl:
+          auto: create-drop
+    show-sql: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+### JWT configs
+authservice:
+  secret:
+    key: key
+  issuer: EmreCerrah
+  expire:
+    date: 300000    # 1000L * 60 * 5
+
