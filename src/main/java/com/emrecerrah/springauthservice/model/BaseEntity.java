@@ -1,20 +1,35 @@
 package com.emrecerrah.springauthservice.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
-@MappedSuperclass // üst sınıf için kullanilmalidir
-@SuperBuilder // bir siniftan nesne türetmek için kullanilir
-@Data // set ve get metodlarini otomatik tanimlar
-@NoArgsConstructor // bos paramtereli hazırlayıcı yapıcı metodu oluşturur.
-@AllArgsConstructor // dolu paramtereli hazırlayıcı yapıcı metodu oluşturur.
+@MappedSuperclass
+@SuperBuilder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
+//TODO: kontrol et!
 public class BaseEntity {
+
+    @CreatedDate
+    @Column(updatable = false) // set just fist time
     private Long createAt;
+
+    @LastModifiedDate
     private Long updateAt;
-    private boolean state;
+
+    @Builder.Default
+    private boolean state = Boolean.TRUE;
 
 }
