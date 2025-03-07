@@ -1,49 +1,24 @@
 package com.emrecerrah.springauthservice.controller;
 
-import com.emrecerrah.springauthservice.constant.ERole;
-import com.emrecerrah.springauthservice.model.Auth;
+import com.emrecerrah.springauthservice.payload.request.LoginRequestDTO;
 import com.emrecerrah.springauthservice.payload.request.RegisterRequestDTO;
-import com.emrecerrah.springauthservice.repository.IAuthRepository;
-import com.emrecerrah.springauthservice.repository.IRoleRepository;
+import com.emrecerrah.springauthservice.payload.response.LoginResponseDTO;
+import com.emrecerrah.springauthservice.payload.response.RegisterResponseDTO;
 import com.emrecerrah.springauthservice.service.AuthService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.emrecerrah.springauthservice.constant.EndPoint.*;
 
-@CrossOrigin(origins = {"*"}, maxAge = 3600)
+@AllArgsConstructor
+@CrossOrigin
 @RestController
 @RequestMapping(ENDPOINT_AUTH)
 public class AuthController {
-    final
-    AuthenticationManager authenticationManager;
-
-    final
-    AuthService authService;
-
-    final
-    IRoleRepository roleRepository;
-
-    final
-    PasswordEncoder encoder;
-
-    final
-    JwtUtils jwtUtils;
-
-    public AuthController(AuthenticationManager authenticationManager, AuthService authService, IRoleRepository roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils) {
-        this.authenticationManager = authenticationManager;
-        this.authService = userRepository;
-        this.roleRepository = roleRepository;
-        this.encoder = encoder;
-        this.jwtUtils = jwtUtils;
-    }
-
+//FIX: daha sonra kaldir    private final AuthenticationManager authenticationManager;
+    private final AuthService authService;
 
     @PostMapping(ENDPOINT_REGISTER)
     public ResponseEntity<RegisterResponseDTO> register (@Valid @RequestBody RegisterRequestDTO dto) {
@@ -54,32 +29,38 @@ public class AuthController {
     public  ResponseEntity<LoginResponseDTO> login (@Valid @RequestBody LoginRequestDTO dto) {
         return ResponseEntity.ok(authService.doLogin(dto)); }
 
-    @GetMapping(ENDPOINT_FIND_ALL)
-    public  ResponseEntity <List<Auth>> findAll (@RequestParam String token) {
-        return ResponseEntity.ok(authService.getRoles(token)); }
+///FIX: authenticationManager uzerinden calismasi icin parametrik olarak gelmesi gerekir.
+//    @PostMapping(ENDPOINT_LOGIN)
+//    public  ResponseEntity<LoginResponseDTO> login (@Valid @RequestBody LoginRequestDTO dto) {
+//        return ResponseEntity.ok(authService.doLogin(dto,authenticationManager)); }
+
+
+//    @GetMapping(ENDPOINT_FIND_ALL)
+//    public  ResponseEntity <List<Auth>> findAll (@RequestParam String token) {
+//        return ResponseEntity.ok(authService.getRoles(token)); }
 
 
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles));
-    }
+//    @PostMapping("/signin")
+//    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+//
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        String jwt = jwtUtils.generateJwtToken(authentication);
+//
+//        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+//        List<String> roles = userDetails.getAuthorities().stream()
+//                .map(item -> item.getAuthority())
+//                .collect(Collectors.toList());
+//
+//        return ResponseEntity.ok(new JwtResponse(jwt,
+//                userDetails.getId(),
+//                userDetails.getUsername(),
+//                userDetails.getEmail(),
+//                roles));
+//    }
 
 //    @PostMapping("/signup")
 //    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupReques signUpRequest) {

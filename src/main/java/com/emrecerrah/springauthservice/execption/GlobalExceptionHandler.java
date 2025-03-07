@@ -1,6 +1,5 @@
 package com.emrecerrah.springauthservice.execption;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthServiceException.class)
     @ResponseBody
     public ResponseEntity<ErrorMessage> handleAuthException(AuthServiceException ex) {
-        return new ResponseEntity(createErrorMessage(ex),ex.getType().getHttpStatus());
+        return new ResponseEntity<>(createErrorMessage(ex),ex.getType().getHttpStatus());
     }
 
     private ErrorMessage createErrorMessage(AuthServiceException ex) {

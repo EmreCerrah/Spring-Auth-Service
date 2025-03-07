@@ -7,12 +7,7 @@ import lombok.Data;
 @Builder
 @Data
 @AllArgsConstructor
-public class RegisterRequestDTO {
+public class LoginRequestDTO {
     private String username;
-
-    private String email;
-
     private String password;
-
-    private String rePassword;
 }

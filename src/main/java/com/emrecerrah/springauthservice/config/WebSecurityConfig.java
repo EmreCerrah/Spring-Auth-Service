@@ -1,5 +1,8 @@
 package com.emrecerrah.springauthservice.config;
 
+import com.emrecerrah.springauthservice.service.AuthService;
+import com.emrecerrah.springauthservice.util.AuthEntryPointJwt;
+import com.emrecerrah.springauthservice.util.AuthTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,17 +17,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.emrecerrah.springauthservice.constant.EndPoint.ENDPOINT_SECRET;
-
 @Configuration
 @EnableMethodSecurity
 //TODO: Bu sinif kontrol edilecek.
 public class WebSecurityConfig {
-    final UserDetailsServiceImpl userDetailsService;
-
+    private final AuthService authService;
     private final AuthEntryPointJwt unauthorizedHandler;
 
-    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
-        this.userDetailsService = userDetailsService;
+    public WebSecurityConfig(AuthService authService, AuthEntryPointJwt unauthorizedHandler) {
+        this.authService = authService;
         this.unauthorizedHandler = unauthorizedHandler;
     }
 
@@ -37,9 +38,8 @@ public class WebSecurityConfig {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setUserDetailsService(authService);
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
 

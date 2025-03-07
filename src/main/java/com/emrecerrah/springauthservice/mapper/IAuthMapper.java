@@ -1,11 +1,19 @@
 package com.emrecerrah.springauthservice.mapper;
 
 import com.emrecerrah.springauthservice.model.Auth;
+import com.emrecerrah.springauthservice.model.UserDetailsImpl;
 import com.emrecerrah.springauthservice.payload.request.RegisterRequestDTO;
+import com.emrecerrah.springauthservice.payload.response.LoginResponseDTO;
+import com.emrecerrah.springauthservice.payload.response.RegisterResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper
 public interface IAuthMapper {
@@ -17,7 +25,7 @@ public interface IAuthMapper {
        })
        @Mapping(target = "authId", source = "id")
        */
-    IAuthMapper INSTANCE = Mappers.getMapper( IAuthMapper.class );
+    IAuthMapper INSTANCE = Mappers.getMapper(IAuthMapper.class);
 
 
     @Mapping(target = "password", expression = "java(encodePassword(dto.getPassword()))")
@@ -34,10 +42,28 @@ public interface IAuthMapper {
 //        return System.currentTimeMillis();
 //    }
 
-    Auth toAuth(final LoginRequestDto dto);
+    RegisterResponseDTO authToResponseDto(final Auth auth);
 
-    RegisterRequestDTO authToRegisterDto(final Auth auth);
-    LoginResponseDto authToLoginDto(final Auth auth);
+
+
+    @Mapping(target = "authorities", expression = "java(mapRoles(user))")
+    UserDetailsImpl toUserDetails(Auth auth);
+
+    default List<SimpleGrantedAuthority> mapRoles(Auth user) {
+        return user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .collect(Collectors.toList());
+    }
+
+    @Mapping(target = "roles", expression = "java(mapAuthorities(userDetails))")
+//    @Mapping(target = "type", constant = "Bearer")
+    LoginResponseDTO toLoginResponseDTO(UserDetailsImpl userDetails);
+
+    default List<String> mapAuthorities(UserDetailsImpl userDetails) {
+        return userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+    }
 }
 
 //    Auth dtoToAuth(final Dto dto);

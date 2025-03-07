@@ -1,21 +1,20 @@
 package com.emrecerrah.springauthservice.model;
 
 import com.emrecerrah.springauthservice.constant.ERole;
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Builder // bir siniftan nesne türetmek için kullanilir
-@Data // set ve get metodlarini otomatik tanimlar
-@NoArgsConstructor // bos paramtereli hazırlayıcı yapıcı metodu oluşturur.
-@AllArgsConstructor // dolu paramtereli hazırlayıcı yapıcı metodu oluşturur.
-@ToString // nesne bilgisini terminale yazdirmak icindir
-@Entity
-@Table(name = "role")
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Document(collection = "role")
 public class Role {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private ERole name;
 }
-

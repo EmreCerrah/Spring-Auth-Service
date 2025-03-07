@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.emrecerrah.springauthservice.constant.EndPoint.ENDPOINT_SECRET;
 
-@CrossOrigin(origins = {"*"}, maxAge = 3600)
+@CrossOrigin
 @RestController
 @RequestMapping(ENDPOINT_SECRET)
 public class LoginController {
@@ -18,11 +18,11 @@ public class LoginController {
         return true;
     }
 
-    @PostMapping("/role")
-    @PreAuthorize("hasRole('MOD') or hasRole('ADMIN')")
-    public ResponseEntity<Boolean> giveRoleAccess(@Valid @RequestBody RoleRequestDTO dto) { //TODO: DTO incele
-        return ResponseEntity.ok(authService.doRoles(dto));
-    }
+//    @PostMapping("/role")
+//    @PreAuthorize("hasRole('MOD') or hasRole('ADMIN')")
+//    public ResponseEntity<Boolean> giveRoleAccess(@Valid @RequestBody RoleRequestDTO dto) { //TODO: DTO incele
+//        return ResponseEntity.ok(authService.AddRole(dto));
+//    }
 
     @GetMapping("/user")
     @PreAuthorize("hasRole('USER') or hasRole('MOD') or hasRole('ADMIN')")
