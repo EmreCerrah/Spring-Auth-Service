@@ -1,13 +1,14 @@
 package com.emrecerrah.springauthservice.repository;
 
 import com.emrecerrah.springauthservice.model.Auth;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface IAuthRepository extends MongoRepository<Auth, String> {
+public interface IAuthRepository extends JpaRepository<Auth, UUID> {
 
     Optional<Auth> findByUsername(String username);
 

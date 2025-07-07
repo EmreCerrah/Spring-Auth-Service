@@ -2,15 +2,18 @@ package com.emrecerrah.springauthservice.service;
 
 import com.emrecerrah.springauthservice.model.BaseEntity;
 import lombok.AllArgsConstructor;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-@AllArgsConstructor
 public class ServiceManager<T extends BaseEntity, ID> implements IService<T, ID> {
 
-    private final MongoRepository<T, ID> repository;
+    protected final JpaRepository<T, ID> repository;
+
+    public ServiceManager(JpaRepository<T, ID> repository) {
+        this.repository = repository;
+    }
 
     @Override
     public void save(T t) {

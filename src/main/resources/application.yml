@@ -1,25 +1,31 @@
-
-###### Server port ########
-
 server:
-  port: 8090  # ${SERVICE_PORT}
+  port: ${SERVICE_PORT:8090}  # Varsayılan 8090
 
-###### Spring configs ########
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
   application:
     name: auth-service
-  data:
-    mongodb:
-      uri: mongodb://http://localhost:27017/authservice #mongodb://admin:password@localhost:27017/baeldung
+  datasource:
+    url: jdbc:postgresql://postgres:5432/${SPRING_DATASOURCE_DB_NAME:authdb}
+    username: ${SPRING_DATASOURCE_USERNAME:psql}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+
+  zipkin:
+    base-url: http://localhost:9411
 
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
-######## JWT configs ########
 AuthService:
   secret:
-    key: key
-    issuer: EmreCerrah
-    date: 300000    # 1000L * 60 * 5
+    key: ${JWT_SECRET_KEY:key}
+    issuer: ${JWT_ISSUER:EmreCerrah}
+    expirationMs: ${JWT_EXPIRATION_MS:300000}
 
+  admin:
+    username: ${ADMIN_USERNAME:admin}
+    password: ${ADMIN_PASSWORD:admin123}
+    email: ${ADMIN_EMAIL:admin@example.com}

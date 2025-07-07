@@ -1,8 +1,9 @@
 package com.emrecerrah.springauthservice.config;
 
-import com.emrecerrah.springauthservice.service.AuthService;
+import com.emrecerrah.springauthservice.service.CustomUserDetailsService;
 import com.emrecerrah.springauthservice.util.AuthEntryPointJwt;
 import com.emrecerrah.springauthservice.util.AuthTokenFilter;
+import com.emrecerrah.springauthservice.util.JwtTokenManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,26 +20,29 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import static com.emrecerrah.springauthservice.constant.EndPoint.ENDPOINT_SECRET;
 @Configuration
 @EnableMethodSecurity
-//TODO: Bu sinif kontrol edilecek.
 public class WebSecurityConfig {
-    private final AuthService authService;
-    private final AuthEntryPointJwt unauthorizedHandler;
 
-    public WebSecurityConfig(AuthService authService, AuthEntryPointJwt unauthorizedHandler) {
-        this.authService = authService;
+    private final CustomUserDetailsService userDetailsService;
+    private final AuthEntryPointJwt unauthorizedHandler;
+    private final JwtTokenManager jwtTokenManager;
+
+    public WebSecurityConfig(CustomUserDetailsService userDetailsService, 
+                            AuthEntryPointJwt unauthorizedHandler,
+                            JwtTokenManager jwtTokenManager) {
+        this.userDetailsService = userDetailsService;
         this.unauthorizedHandler = unauthorizedHandler;
+        this.jwtTokenManager = jwtTokenManager;
     }
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter();
+        return new AuthTokenFilter(jwtTokenManager, userDetailsService);
     }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
-        authProvider.setUserDetailsService(authService);
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
@@ -60,7 +64,7 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(ENDPOINT_SECRET+"/**").authenticated()// just one endpoint is authenticated
+                        .requestMatchers(ENDPOINT_SECRET + "/**").authenticated()
                         .anyRequest().permitAll());
 
         http.authenticationProvider(authenticationProvider());

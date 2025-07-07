@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serial;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -19,7 +20,7 @@ public class UserDetailsImpl implements UserDetails {
     @Builder.Default
     private static final long serialVersionUID = 1L;
 
-    private long id;
+    private UUID id;
 
     private String username;
 
