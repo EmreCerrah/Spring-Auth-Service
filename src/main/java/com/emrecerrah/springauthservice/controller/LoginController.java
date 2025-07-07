@@ -1,7 +1,5 @@
 package com.emrecerrah.springauthservice.controller;
 
-import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +15,6 @@ public class LoginController {
     public boolean dashboardAccess() {
         return true;
     }
-
-//    @PostMapping("/role")
-//    @PreAuthorize("hasRole('MOD') or hasRole('ADMIN')")
-//    public ResponseEntity<Boolean> giveRoleAccess(@Valid @RequestBody RoleRequestDTO dto) { //TODO: DTO incele
-//        return ResponseEntity.ok(authService.AddRole(dto));
-//    }
 
     @GetMapping("/user")
     @PreAuthorize("hasRole('USER') or hasRole('MOD') or hasRole('ADMIN')")

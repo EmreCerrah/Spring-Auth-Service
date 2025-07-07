@@ -1,7 +1,6 @@
 package com.emrecerrah.springauthservice.service;
 
 import com.emrecerrah.springauthservice.model.BaseEntity;
-import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
