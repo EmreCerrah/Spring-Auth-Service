@@ -73,7 +73,7 @@ tasks.named('test') {
 }
 
 // Configure MapStruct to work with Lombok
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.compilerArgs = [
             '-Amapstruct.defaultComponentModel=spring',
             '-Amapstruct.unmappedTargetPolicy=IGNORE'
