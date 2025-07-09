@@ -4,11 +4,15 @@ server:
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
   application:
     name: auth-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/mydatabase
+    url: jdbc:postgresql://localhost:5432/authdb  #postgres
     username: psql  #postgres
     password: postgres
 
