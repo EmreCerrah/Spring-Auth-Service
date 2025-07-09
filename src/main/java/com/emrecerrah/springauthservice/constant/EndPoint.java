@@ -9,6 +9,7 @@ public class EndPoint {
     public static final String ENDPOINT_CHANGE_PASSWORD = "/change-password";
     public static final String ENDPOINT_CHANGE_USERNAME = "/change-username";
     public static final String ENDPOINT_MANAGE_ROLE = "/manage-role";
+    public static final String ENDPOINT_DELETE_USER = "/delete-user";
 
     public static final String ENDPOINT_AUTH = "/auth";
     public static final String ENDPOINT_SECRET = "/secret";

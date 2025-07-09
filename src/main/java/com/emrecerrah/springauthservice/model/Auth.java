@@ -20,6 +20,7 @@ import static com.emrecerrah.springauthservice.constant.RegexPatern.REGEX_PASSWO
 @AllArgsConstructor
 @Entity
 @Getter
+@Setter
 @Table(name = "auth") // PostgreSQL'de tablo adı
 public class Auth extends BaseEntity {
 

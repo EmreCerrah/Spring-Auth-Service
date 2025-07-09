@@ -8,9 +8,9 @@ spring:
   application:
     name: auth-service
   datasource:
-    url: jdbc:postgresql://postgres:5432/${SPRING_DATASOURCE_DB_NAME:authdb}
-    username: ${SPRING_DATASOURCE_USERNAME:psql}
-    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    url: jdbc:postgresql://localhost:5432/mydatabase
+    username: psql  #postgres
+    password: postgres
 
   zipkin:
     base-url: http://localhost:9411
